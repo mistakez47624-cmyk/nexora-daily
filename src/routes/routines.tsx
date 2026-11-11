@@ -250,8 +250,10 @@ function RoutineCard({
                       "aspect-square rounded-[4px] outline-none focus-visible:ring-2 focus-visible:ring-ring",
                       done
                         ? "bg-primary"
-                        : beforeStart || !scheduled
-                          ? "bg-secondary/50"
+                        : beforeStart
+                          ? "bg-secondary/30"
+                          : !scheduled
+                            ? "bg-secondary/50"
                           : key === today
                             ? "border border-dashed border-muted-foreground/50"
                             : "bg-secondary",

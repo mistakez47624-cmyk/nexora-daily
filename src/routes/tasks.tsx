@@ -123,7 +123,7 @@ function TasksPage() {
             <div
               role="tablist"
               aria-label="Filter by status"
-              className="flex gap-1 overflow-x-auto rounded-lg bg-secondary p-1 sm:w-fit"
+              className="grid grid-cols-4 gap-1 rounded-lg bg-secondary p-1 sm:flex sm:w-fit"
             >
               {STATUS_TABS.map((tab) => (
                 <button
@@ -133,14 +133,14 @@ function TasksPage() {
                   aria-selected={status === tab.value}
                   onClick={() => setStatus(tab.value)}
                   className={cn(
-                    "flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors duration-150 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                    "flex min-w-0 cursor-pointer items-center justify-center gap-1.5 rounded-md px-1.5 py-1.5 text-[13px] font-medium sm:px-3 sm:text-sm text-muted-foreground transition-colors duration-150 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     status === tab.value && "bg-card text-foreground shadow-card",
                   )}
                 >
                   {tab.label}
                   <span
                     className={cn(
-                      "rounded px-1.5 text-xs tabular-nums",
+                      "hidden rounded px-1.5 text-xs tabular-nums sm:inline",
                       tab.value === "overdue" && counts.overdue > 0
                         ? "text-destructive"
                         : "text-muted-foreground",

@@ -91,7 +91,7 @@ function Dashboard() {
       </Card>
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <Card className="col-span-2 min-w-0 p-5 lg:col-span-1">
+        <Card className="min-w-0 p-5">
           <p className="eyebrow">Today's progress</p>
           <p className="mt-2 text-2xl font-semibold tabular-nums tracking-tight">{dayPct}%</p>
           <Progress value={dayPct} className="mt-3 h-1.5" aria-label="Today's progress" />
