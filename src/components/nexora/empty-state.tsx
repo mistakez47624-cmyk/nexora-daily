@@ -12,10 +12,10 @@ export function EmptyState({
 }: {
   icon: LucideIcon;
   title: string;
-  description?: string;
+  description?: string | undefined;
   action?: ReactNode;
   compact?: boolean;
-  className?: string;
+  className?: string | undefined;
 }) {
   return (
     <div

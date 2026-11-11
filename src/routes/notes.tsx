@@ -300,8 +300,9 @@ function NoteEditor({ note, onBack, onDelete }: { note: Note; onBack: () => void
     if (e.key === "Enter" || e.key === ",") {
       e.preventDefault();
       addTag();
-    } else if (e.key === "Backspace" && tagInput === "" && tags.length > 0) {
-      removeTag(tags[tags.length - 1]);
+    } else if (e.key === "Backspace" && tagInput === "") {
+      const last = tags[tags.length - 1];
+      if (last) removeTag(last);
     }
   };
 
