@@ -42,9 +42,9 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Wordmark />
           </Link>
         </header>
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
+        <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
           {hydrated ? children : <ShellSkeleton />}
-        </main>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );
