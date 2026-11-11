@@ -17,7 +17,7 @@ import type { Task } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { PriorityBadge } from "./priority-badge";
 
-export function toggleTaskWithFeedback(task: Task) {
+function toggleTaskWithFeedback(task: Task) {
   const next = !task.completed;
   if (setTaskCompleted(task.id, next)) {
     toast.success(next ? "Task completed" : "Task marked as not done", {

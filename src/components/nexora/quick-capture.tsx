@@ -8,14 +8,9 @@ import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { captureSchema } from "@/lib/schema";
 import { addInboxItem } from "@/lib/store";
+import { CATEGORY_LABEL } from "@/lib/inbox";
 import type { InboxCategory } from "@/lib/types";
 import { FieldError } from "./field-error";
-
-export const CATEGORY_LABEL: Record<InboxCategory, string> = {
-  task: "Task",
-  note: "Note",
-  idea: "Idea",
-};
 
 export function QuickCapture({
   showViewAction = false,

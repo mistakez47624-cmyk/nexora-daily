@@ -43,7 +43,8 @@ import { ConfirmDialog } from "@/components/nexora/confirm-dialog";
 import { EmptyState } from "@/components/nexora/empty-state";
 import { FieldError } from "@/components/nexora/field-error";
 import { PageHeader } from "@/components/nexora/page-header";
-import { CATEGORY_LABEL, QuickCapture } from "@/components/nexora/quick-capture";
+import { QuickCapture } from "@/components/nexora/quick-capture";
+import { CATEGORY_LABEL } from "@/lib/inbox";
 import { captureSchema } from "@/lib/schema";
 import {
   convertInboxToNote,
