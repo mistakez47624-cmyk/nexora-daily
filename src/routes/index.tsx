@@ -22,9 +22,15 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Dashboard — NEXORA" },
-      { name: "description", content: "Your day at a glance: today's tasks, deadlines, routines and recent notes." },
+      {
+        name: "description",
+        content: "Your day at a glance: today's tasks, deadlines, routines and recent notes.",
+      },
       { property: "og:title", content: "Dashboard — NEXORA" },
-      { property: "og:description", content: "Your day at a glance: today's tasks, deadlines, routines and recent notes." },
+      {
+        property: "og:description",
+        content: "Your day at a glance: today's tasks, deadlines, routines and recent notes.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -48,7 +54,10 @@ function Dashboard() {
     const dayTotal = todays.length + routinesToday.length;
     const dayDone = todays.filter((t) => t.completed).length + routinesDone.length;
     return {
-      todayList: [...sortTasks(overdue, "due"), ...sortTasks(todays, "due").sort((a, b) => Number(a.completed) - Number(b.completed))],
+      todayList: [
+        ...sortTasks(overdue, "due"),
+        ...sortTasks(todays, "due").sort((a, b) => Number(a.completed) - Number(b.completed)),
+      ],
       overdue,
       open,
       doneThisWeek,
@@ -57,7 +66,9 @@ function Dashboard() {
       dayTotal,
       dayDone,
       upcoming: upcomingTasks(data.tasks, 7, today).slice(0, 5),
-      recentNotes: [...data.notes].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 4),
+      recentNotes: [...data.notes]
+        .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+        .slice(0, 4),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, today]);
@@ -85,10 +96,16 @@ function Dashboard() {
           <p className="mt-2 text-2xl font-semibold tabular-nums tracking-tight">{dayPct}%</p>
           <Progress value={dayPct} className="mt-3 h-1.5" aria-label="Today's progress" />
           <p className="mt-2 text-xs text-muted-foreground">
-            {stats.dayTotal === 0 ? "Nothing scheduled today" : `${stats.dayDone} of ${stats.dayTotal} done`}
+            {stats.dayTotal === 0
+              ? "Nothing scheduled today"
+              : `${stats.dayDone} of ${stats.dayTotal} done`}
           </p>
         </Card>
-        <StatCard label="Open tasks" value={stats.open.length} hint={`${pluralize(data.tasks.length, "task")} in total`} />
+        <StatCard
+          label="Open tasks"
+          value={stats.open.length}
+          hint={`${pluralize(data.tasks.length, "task")} in total`}
+        />
         <StatCard label="Done this week" value={stats.doneThisWeek.length} hint="Since Monday" />
         <StatCard
           label="Overdue"
@@ -127,7 +144,12 @@ function Dashboard() {
 
         <SectionCard title="Upcoming deadlines" action={<ViewAll to="/tasks" label="All tasks" />}>
           {stats.upcoming.length === 0 ? (
-            <EmptyState compact icon={CalendarClock} title="No upcoming deadlines" description="Nothing due in the next 7 days." />
+            <EmptyState
+              compact
+              icon={CalendarClock}
+              title="No upcoming deadlines"
+              description="Nothing due in the next 7 days."
+            />
           ) : (
             <ul className="divide-y divide-border/60">
               {stats.upcoming.map((t) => (
@@ -159,7 +181,11 @@ function Dashboard() {
               compact
               icon={Repeat}
               title={data.routines.length === 0 ? "No routines yet" : "Rest day"}
-              description={data.routines.length === 0 ? "Create a routine to build a daily habit." : "No routines are scheduled for today."}
+              description={
+                data.routines.length === 0
+                  ? "Create a routine to build a daily habit."
+                  : "No routines are scheduled for today."
+              }
               action={
                 data.routines.length === 0 ? (
                   <Button asChild size="sm" variant="outline">
@@ -174,20 +200,35 @@ function Dashboard() {
                 const done = isCompletedOn(r, today);
                 const streak = currentStreak(r, today);
                 return (
-                  <li key={r.id} className="flex items-center gap-3 rounded-lg px-3 py-2 transition-colors duration-150 hover:bg-accent/50">
+                  <li
+                    key={r.id}
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 transition-colors duration-150 hover:bg-accent/50"
+                  >
                     <Checkbox
                       id={`dash-routine-${r.id}`}
                       checked={done}
                       onCheckedChange={(v) => {
                         if (setRoutineDone(r.id, v === true, today)) {
-                          toast.success(v === true ? `${r.name} done for today` : `${r.name} unchecked`);
+                          toast.success(
+                            v === true ? `${r.name} done for today` : `${r.name} unchecked`,
+                          );
                         }
                       }}
                     />
-                    <label htmlFor={`dash-routine-${r.id}`} className={cn("min-w-0 flex-1 cursor-pointer truncate text-sm", done && "text-muted-foreground line-through")}>
+                    <label
+                      htmlFor={`dash-routine-${r.id}`}
+                      className={cn(
+                        "min-w-0 flex-1 cursor-pointer truncate text-sm",
+                        done && "text-muted-foreground line-through",
+                      )}
+                    >
                       {r.name}
                     </label>
-                    {streak > 0 && <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{streak}-day streak</span>}
+                    {streak > 0 && (
+                      <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+                        {streak}-day streak
+                      </span>
+                    )}
                   </li>
                 );
               })}
@@ -195,7 +236,11 @@ function Dashboard() {
           )}
         </SectionCard>
 
-        <SectionCard title="Recent notes" className="lg:col-span-2" action={<ViewAll to="/notes" label="All notes" />}>
+        <SectionCard
+          title="Recent notes"
+          className="lg:col-span-2"
+          action={<ViewAll to="/notes" label="All notes" />}
+        >
           {stats.recentNotes.length === 0 ? (
             <EmptyState
               compact
@@ -218,7 +263,9 @@ function Dashboard() {
                   className="block min-w-0 rounded-lg px-3 py-2.5 transition-colors duration-150 hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   <p className="truncate text-sm font-medium">{n.title || "Untitled note"}</p>
-                  <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{n.content || "No content"}</p>
+                  <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
+                    {n.content || "No content"}
+                  </p>
                   <p className="mt-1 text-xs text-muted-foreground">
                     Edited {formatDistanceToNow(new Date(n.updatedAt), { addSuffix: true })}
                   </p>
@@ -228,7 +275,6 @@ function Dashboard() {
           )}
         </SectionCard>
       </div>
-
     </div>
   );
 }

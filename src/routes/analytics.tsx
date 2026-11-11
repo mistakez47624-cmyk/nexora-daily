@@ -4,7 +4,12 @@ import { BarChart3, PieChart as PieIcon, Repeat } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, XAxis, YAxis } from "recharts";
 
 import { Button } from "@/components/ui/button";
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart";
 import { EmptyState } from "@/components/nexora/empty-state";
 import { PageHeader } from "@/components/nexora/page-header";
 import { SectionCard, StatCard } from "@/components/nexora/section-card";
@@ -17,9 +22,15 @@ export const Route = createFileRoute("/analytics")({
   head: () => ({
     meta: [
       { title: "Analytics — NEXORA" },
-      { name: "description", content: "See how your week is going: task completion, progress and routine consistency." },
+      {
+        name: "description",
+        content: "See how your week is going: task completion, progress and routine consistency.",
+      },
       { property: "og:title", content: "Analytics — NEXORA" },
-      { property: "og:description", content: "See how your week is going: task completion, progress and routine consistency." },
+      {
+        property: "og:description",
+        content: "See how your week is going: task completion, progress and routine consistency.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -27,13 +38,17 @@ export const Route = createFileRoute("/analytics")({
   component: AnalyticsPage,
 });
 
-const weeklyConfig = { completed: { label: "Completed", color: "var(--chart-1)" } } satisfies ChartConfig;
+const weeklyConfig = {
+  completed: { label: "Completed", color: "var(--chart-1)" },
+} satisfies ChartConfig;
 const statusConfig = {
   completed: { label: "Completed", color: "var(--chart-1)" },
   pending: { label: "Pending", color: "var(--chart-3)" },
   overdue: { label: "Overdue", color: "var(--chart-4)" },
 } satisfies ChartConfig;
-const routineConfig = { rate: { label: "Completion", color: "var(--chart-1)" } } satisfies ChartConfig;
+const routineConfig = {
+  rate: { label: "Completion", color: "var(--chart-1)" },
+} satisfies ChartConfig;
 
 function AnalyticsPage() {
   const { tasks, routines } = useAppData();
@@ -59,7 +74,8 @@ function AnalyticsPage() {
   );
 
   const weeklyTotal = weekly.reduce((s, d) => s + d.completed, 0);
-  const completionPct = status.total === 0 ? 0 : Math.round((status.completed / status.total) * 100);
+  const completionPct =
+    status.total === 0 ? 0 : Math.round((status.completed / status.total) * 100);
   const routineAvg =
     routineStats.filter((r) => r.scheduled > 0).length === 0
       ? null
@@ -74,7 +90,10 @@ function AnalyticsPage() {
   if (tasks.length === 0 && routines.length === 0) {
     return (
       <div>
-        <PageHeader title="Analytics" description="Insights based on your own tasks and routines." />
+        <PageHeader
+          title="Analytics"
+          description="Insights based on your own tasks and routines."
+        />
         <EmptyState
           icon={BarChart3}
           title="No data to analyze yet"
@@ -99,8 +118,16 @@ function AnalyticsPage() {
       <PageHeader title="Analytics" description="Insights based on your own tasks and routines." />
 
       <section aria-label="Productivity overview" className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <StatCard label="Completion rate" value={`${completionPct}%`} hint={`${status.completed} of ${status.total} tasks done`} />
-        <StatCard label="Done last 7 days" value={thisWeek.completed} hint={`${thisWeek.created} created in the same period`} />
+        <StatCard
+          label="Completion rate"
+          value={`${completionPct}%`}
+          hint={`${status.completed} of ${status.total} tasks done`}
+        />
+        <StatCard
+          label="Done last 7 days"
+          value={thisWeek.completed}
+          hint={`${thisWeek.created} created in the same period`}
+        />
         <StatCard
           label="Overdue"
           value={status.overdue}
@@ -118,10 +145,17 @@ function AnalyticsPage() {
         <SectionCard
           title="Tasks completed — last 7 days"
           className="lg:col-span-3"
-          action={<span className="text-xs tabular-nums text-muted-foreground">{weeklyTotal} total</span>}
+          action={
+            <span className="text-xs tabular-nums text-muted-foreground">{weeklyTotal} total</span>
+          }
         >
           {weeklyTotal === 0 ? (
-            <EmptyState compact icon={BarChart3} title="No tasks completed this week" description="Complete a task and it will show up here." />
+            <EmptyState
+              compact
+              icon={BarChart3}
+              title="No tasks completed this week"
+              description="Complete a task and it will show up here."
+            />
           ) : (
             <ChartContainer config={weeklyConfig} className="aspect-auto h-64 w-full p-2">
               <BarChart data={weekly} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
@@ -130,9 +164,16 @@ function AnalyticsPage() {
                 <YAxis allowDecimals={false} tickLine={false} axisLine={false} width={40} />
                 <ChartTooltip
                   cursor={{ fill: "var(--accent)", opacity: 0.5 }}
-                  content={<ChartTooltipContent labelFormatter={(_, p) => p?.[0]?.payload?.fullLabel} />}
+                  content={
+                    <ChartTooltipContent labelFormatter={(_, p) => p?.[0]?.payload?.fullLabel} />
+                  }
                 />
-                <Bar dataKey="completed" fill="var(--color-completed)" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                <Bar
+                  dataKey="completed"
+                  fill="var(--color-completed)"
+                  radius={[4, 4, 0, 0]}
+                  maxBarSize={40}
+                />
               </BarChart>
             </ChartContainer>
           )}
@@ -140,13 +181,26 @@ function AnalyticsPage() {
 
         <SectionCard title="Completed vs pending" className="lg:col-span-2">
           {status.total === 0 ? (
-            <EmptyState compact icon={PieIcon} title="No tasks yet" description="Add tasks to see their status breakdown." />
+            <EmptyState
+              compact
+              icon={PieIcon}
+              title="No tasks yet"
+              description="Add tasks to see their status breakdown."
+            />
           ) : (
             <div className="flex flex-col items-center gap-4 p-2 sm:flex-row lg:flex-col xl:flex-row">
               <ChartContainer config={statusConfig} className="aspect-square h-48 w-48 shrink-0">
                 <PieChart>
                   <ChartTooltip content={<ChartTooltipContent nameKey="key" hideLabel />} />
-                  <Pie data={pieData} dataKey="value" nameKey="key" innerRadius={52} outerRadius={80} strokeWidth={2} stroke="var(--card)">
+                  <Pie
+                    data={pieData}
+                    dataKey="value"
+                    nameKey="key"
+                    innerRadius={52}
+                    outerRadius={80}
+                    strokeWidth={2}
+                    stroke="var(--card)"
+                  >
                     {pieData.map((d) => (
                       <Cell key={d.key} fill={`var(--color-${d.key})`} />
                     ))}
@@ -157,7 +211,11 @@ function AnalyticsPage() {
                 {(["completed", "pending", "overdue"] as const).map((k) => (
                   <li key={k} className="flex items-center justify-between gap-3">
                     <span className="flex items-center gap-2 text-muted-foreground">
-                      <span className="size-2.5 rounded-sm" style={{ backgroundColor: statusConfig[k].color }} aria-hidden />
+                      <span
+                        className="size-2.5 rounded-sm"
+                        style={{ backgroundColor: statusConfig[k].color }}
+                        aria-hidden
+                      />
                       {statusConfig[k].label}
                     </span>
                     <span className="font-medium tabular-nums">
@@ -194,9 +252,19 @@ function AnalyticsPage() {
               className="aspect-auto w-full"
               style={{ height: Math.max(160, routineStats.length * 44 + 40) }}
             >
-              <BarChart data={routineStats} layout="vertical" margin={{ top: 4, right: 16, left: 0, bottom: 0 }}>
+              <BarChart
+                data={routineStats}
+                layout="vertical"
+                margin={{ top: 4, right: 16, left: 0, bottom: 0 }}
+              >
                 <CartesianGrid horizontal={false} strokeDasharray="3 3" />
-                <XAxis type="number" domain={[0, 100]} tickFormatter={(v) => `${v}%`} tickLine={false} axisLine={false} />
+                <XAxis
+                  type="number"
+                  domain={[0, 100]}
+                  tickFormatter={(v) => `${v}%`}
+                  tickLine={false}
+                  axisLine={false}
+                />
                 <YAxis
                   type="category"
                   dataKey="name"
@@ -207,14 +275,28 @@ function AnalyticsPage() {
                 />
                 <ChartTooltip
                   cursor={{ fill: "var(--accent)", opacity: 0.5 }}
-                  content={<ChartTooltipContent formatter={(v, _n, item) => `${v}% · ${item.payload.done}/${item.payload.scheduled} days`} />}
+                  content={
+                    <ChartTooltipContent
+                      formatter={(v, _n, item) =>
+                        `${v}% · ${item.payload.done}/${item.payload.scheduled} days`
+                      }
+                    />
+                  }
                 />
-                <Bar dataKey="rate" fill="var(--color-rate)" radius={[0, 4, 4, 0]} maxBarSize={22} />
+                <Bar
+                  dataKey="rate"
+                  fill="var(--color-rate)"
+                  radius={[0, 4, 4, 0]}
+                  maxBarSize={22}
+                />
               </BarChart>
             </ChartContainer>
             <ul className="divide-y divide-border/60 self-start rounded-lg border">
               {routineStats.map((r) => (
-                <li key={r.id} className="flex items-center justify-between gap-3 px-3 py-2 text-sm">
+                <li
+                  key={r.id}
+                  className="flex items-center justify-between gap-3 px-3 py-2 text-sm"
+                >
                   <span className="min-w-0 truncate">{r.name}</span>
                   <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
                     {r.streak}-day streak · {r.scheduled === 0 ? "—" : `${r.rate}%`}

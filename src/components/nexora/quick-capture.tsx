@@ -17,7 +17,13 @@ export const CATEGORY_LABEL: Record<InboxCategory, string> = {
   idea: "Idea",
 };
 
-export function QuickCapture({ showViewAction = false, autoFocus = false }: { showViewAction?: boolean; autoFocus?: boolean }) {
+export function QuickCapture({
+  showViewAction = false,
+  autoFocus = false,
+}: {
+  showViewAction?: boolean;
+  autoFocus?: boolean;
+}) {
   const [value, setValue] = useState("");
   const [category, setCategory] = useState<InboxCategory>("task");
   const [error, setError] = useState<string>();
@@ -34,7 +40,9 @@ export function QuickCapture({ showViewAction = false, autoFocus = false }: { sh
       setValue("");
       setError(undefined);
       toast.success(`${CATEGORY_LABEL[category]} captured to Inbox`, {
-        action: showViewAction ? { label: "View", onClick: () => navigate({ to: "/inbox" }) } : undefined,
+        action: showViewAction
+          ? { label: "View", onClick: () => navigate({ to: "/inbox" }) }
+          : undefined,
       });
     }
   };

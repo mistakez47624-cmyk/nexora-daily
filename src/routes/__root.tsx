@@ -83,10 +83,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "NEXORA — Your world. In sync." },
-      { name: "description", content: "NEXORA is your personal command center for tasks, notes, routines and an inbox." },
+      {
+        name: "description",
+        content: "NEXORA is your personal command center for tasks, notes, routines and an inbox.",
+      },
       { name: "author", content: "NEXORA" },
       { property: "og:title", content: "NEXORA — Your world. In sync." },
-      { property: "og:description", content: "Your personal command center for tasks, notes, routines and an inbox." },
+      {
+        property: "og:description",
+        content: "Your personal command center for tasks, notes, routines and an inbox.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

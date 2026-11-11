@@ -53,7 +53,8 @@ export function sortTasks(tasks: Task[], sort: TaskSort): Task[] {
   if (sort === "oldest") return copy.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
   // Due date ascending; tasks without a due date go last; ties broken by priority.
   return copy.sort((a, b) => {
-    if (a.dueDate && b.dueDate && a.dueDate !== b.dueDate) return a.dueDate.localeCompare(b.dueDate);
+    if (a.dueDate && b.dueDate && a.dueDate !== b.dueDate)
+      return a.dueDate.localeCompare(b.dueDate);
     if (a.dueDate && !b.dueDate) return -1;
     if (!a.dueDate && b.dueDate) return 1;
     const p = PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority];

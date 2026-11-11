@@ -56,7 +56,11 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="h-14 justify-center border-b border-sidebar-border px-3 group-data-[collapsible=icon]:px-2">
-        <Link to="/" onClick={closeOnMobile} className="rounded-md outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring">
+        <Link
+          to="/"
+          onClick={closeOnMobile}
+          className="rounded-md outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
+        >
           <Wordmark />
         </Link>
       </SidebarHeader>
@@ -74,7 +78,9 @@ export function AppSidebar() {
                     </Link>
                   </SidebarMenuButton>
                   {item.to === "/inbox" && unprocessed > 0 && (
-                    <SidebarMenuBadge className="text-muted-foreground">{unprocessed}</SidebarMenuBadge>
+                    <SidebarMenuBadge className="text-muted-foreground">
+                      {unprocessed}
+                    </SidebarMenuBadge>
                   )}
                 </SidebarMenuItem>
               ))}

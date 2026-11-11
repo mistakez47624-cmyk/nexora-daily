@@ -10,7 +10,9 @@ const DOT: Record<Priority, string> = {
 
 export function PriorityBadge({ priority, className }: { priority: Priority; className?: string }) {
   return (
-    <span className={cn("inline-flex items-center gap-1.5 text-xs text-muted-foreground", className)}>
+    <span
+      className={cn("inline-flex items-center gap-1.5 text-xs text-muted-foreground", className)}
+    >
       <span className={cn("size-1.5 rounded-full", DOT[priority])} aria-hidden />
       {PRIORITY_LABEL[priority]}
     </span>

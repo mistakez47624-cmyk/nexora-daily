@@ -34,7 +34,10 @@ export function AppShell({ children }: { children: ReactNode }) {
       <AppSidebar />
       <SidebarInset className="min-w-0 bg-background">
         <header className="sticky top-0 z-20 flex h-14 items-center gap-2 border-b bg-background/90 px-3 backdrop-blur md:px-4">
-          <SidebarTrigger aria-label="Toggle sidebar" className="size-9 text-muted-foreground hover:text-foreground" />
+          <SidebarTrigger
+            aria-label="Toggle sidebar"
+            className="size-9 text-muted-foreground hover:text-foreground"
+          />
           <Link to="/" className="rounded-md md:hidden" aria-label="NEXORA home">
             <Wordmark />
           </Link>

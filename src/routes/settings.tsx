@@ -21,9 +21,15 @@ export const Route = createFileRoute("/settings")({
   head: () => ({
     meta: [
       { title: "Settings — NEXORA" },
-      { name: "description", content: "Choose your theme, edit your name and back up or restore your data." },
+      {
+        name: "description",
+        content: "Choose your theme, edit your name and back up or restore your data.",
+      },
       { property: "og:title", content: "Settings — NEXORA" },
-      { property: "og:description", content: "Choose your theme, edit your name and back up or restore your data." },
+      {
+        property: "og:description",
+        content: "Choose your theme, edit your name and back up or restore your data.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -80,7 +86,9 @@ function SettingsPage() {
       const parsed = parseAppData(JSON.parse(await file.text()));
       setPendingImport(parsed);
     } catch {
-      toast.error("Couldn't import that file", { description: "Choose a JSON backup exported from NEXORA." });
+      toast.error("Couldn't import that file", {
+        description: "Choose a JSON backup exported from NEXORA.",
+      });
     }
   };
 
@@ -172,7 +180,10 @@ function SettingsPage() {
           </div>
         </SettingsSection>
 
-        <SettingsSection title="Your data" description={`Stored only in this browser. Currently: ${counts}.`}>
+        <SettingsSection
+          title="Your data"
+          description={`Stored only in this browser. Currently: ${counts}.`}
+        >
           <div className="flex flex-col gap-3 sm:flex-row">
             <Button variant="outline" onClick={doExport}>
               <Download /> Export to JSON
@@ -180,11 +191,20 @@ function SettingsPage() {
             <Button variant="outline" onClick={() => fileRef.current?.click()}>
               <Upload /> Import from JSON
             </Button>
-            <input ref={fileRef} type="file" accept="application/json,.json" className="hidden" onChange={onFile} />
+            <input
+              ref={fileRef}
+              type="file"
+              accept="application/json,.json"
+              className="hidden"
+              onChange={onFile}
+            />
           </div>
         </SettingsSection>
 
-        <SettingsSection title="Danger zone" description="Permanently remove all tasks, notes, inbox entries, routines and your name from this browser.">
+        <SettingsSection
+          title="Danger zone"
+          description="Permanently remove all tasks, notes, inbox entries, routines and your name from this browser."
+        >
           <Button variant="destructive" onClick={() => setConfirmClear(true)}>
             <Trash2 /> Clear all data
           </Button>

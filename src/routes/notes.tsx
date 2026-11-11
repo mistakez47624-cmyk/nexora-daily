@@ -2,7 +2,17 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react"
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import { formatDistanceToNow } from "date-fns";
-import { ArrowLeft, Check, Loader2, Plus, Search, SearchX, StickyNote, Trash2, X } from "lucide-react";
+import {
+  ArrowLeft,
+  Check,
+  Loader2,
+  Plus,
+  Search,
+  SearchX,
+  StickyNote,
+  Trash2,
+  X,
+} from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -23,9 +33,15 @@ export const Route = createFileRoute("/notes")({
   head: () => ({
     meta: [
       { title: "Notes — NEXORA" },
-      { name: "description", content: "Write and organize notes with tags. Everything saves automatically." },
+      {
+        name: "description",
+        content: "Write and organize notes with tags. Everything saves automatically.",
+      },
       { property: "og:title", content: "Notes — NEXORA" },
-      { property: "og:description", content: "Write and organize notes with tags. Everything saves automatically." },
+      {
+        property: "og:description",
+        content: "Write and organize notes with tags. Everything saves automatically.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -111,7 +127,12 @@ function NotesPage() {
 
       <div className="grid gap-4 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
         {/* List */}
-        <Card className={cn("flex min-w-0 flex-col overflow-hidden md:h-[calc(100dvh-14rem)] md:min-h-[28rem]", selected && "hidden md:flex")}>
+        <Card
+          className={cn(
+            "flex min-w-0 flex-col overflow-hidden md:h-[calc(100dvh-14rem)] md:min-h-[28rem]",
+            selected && "hidden md:flex",
+          )}
+        >
           <div className="space-y-3 border-b p-3">
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -134,7 +155,8 @@ function NotesPage() {
                     onClick={() => setTag(tag === t ? null : t)}
                     className={cn(
                       "cursor-pointer rounded-md border px-2 py-0.5 text-xs text-muted-foreground transition-colors duration-150 hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                      tag === t && "border-primary bg-selected text-selected-foreground hover:bg-selected hover:text-selected-foreground",
+                      tag === t &&
+                        "border-primary bg-selected text-selected-foreground hover:bg-selected hover:text-selected-foreground",
                     )}
                   >
                     #{t}
@@ -177,10 +199,17 @@ function NotesPage() {
                         n.id === id && "bg-selected hover:bg-selected",
                       )}
                     >
-                      <p className={cn("truncate text-sm font-medium", n.id === id && "text-selected-foreground")}>
+                      <p
+                        className={cn(
+                          "truncate text-sm font-medium",
+                          n.id === id && "text-selected-foreground",
+                        )}
+                      >
                         {n.title || "Untitled note"}
                       </p>
-                      <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{n.content || "No content"}</p>
+                      <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
+                        {n.content || "No content"}
+                      </p>
                       <p className="mt-1 truncate text-xs text-muted-foreground">
                         {formatDistanceToNow(new Date(n.updatedAt), { addSuffix: true })}
                         {n.tags.length > 0 && ` · ${n.tags.map((t) => `#${t}`).join(" ")}`}
@@ -194,7 +223,12 @@ function NotesPage() {
         </Card>
 
         {/* Editor */}
-        <Card className={cn("min-w-0 overflow-hidden md:h-[calc(100dvh-14rem)] md:min-h-[28rem]", !selected && "hidden md:block")}>
+        <Card
+          className={cn(
+            "min-w-0 overflow-hidden md:h-[calc(100dvh-14rem)] md:min-h-[28rem]",
+            !selected && "hidden md:block",
+          )}
+        >
           {selected ? (
             <NoteEditor
               key={selected.id}
@@ -238,7 +272,15 @@ function NotesPage() {
 
 type SaveState = "saved" | "saving";
 
-function NoteEditor({ note, onBack, onDelete }: { note: Note; onBack: () => void; onDelete: () => void }) {
+function NoteEditor({
+  note,
+  onBack,
+  onDelete,
+}: {
+  note: Note;
+  onBack: () => void;
+  onDelete: () => void;
+}) {
   const [title, setTitle] = useState(note.title);
   const [content, setContent] = useState(note.content);
   const [tags, setTags] = useState<string[]>(note.tags);
@@ -312,7 +354,10 @@ function NoteEditor({ note, onBack, onDelete }: { note: Note; onBack: () => void
         <Button variant="ghost" size="sm" className="md:hidden" onClick={onBack}>
           <ArrowLeft /> Notes
         </Button>
-        <span className="flex items-center gap-1.5 text-xs text-muted-foreground md:ml-2" aria-live="polite">
+        <span
+          className="flex items-center gap-1.5 text-xs text-muted-foreground md:ml-2"
+          aria-live="polite"
+        >
           {saveState === "saving" ? (
             <>
               <Loader2 className="size-3 animate-spin" /> Saving…
@@ -323,7 +368,13 @@ function NoteEditor({ note, onBack, onDelete }: { note: Note; onBack: () => void
             </>
           )}
         </span>
-        <Button variant="ghost" size="icon" className="size-8 hover:text-destructive" onClick={onDelete} aria-label="Delete note">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="size-8 hover:text-destructive"
+          onClick={onDelete}
+          aria-label="Delete note"
+        >
           <Trash2 />
         </Button>
       </div>
@@ -347,7 +398,10 @@ function NoteEditor({ note, onBack, onDelete }: { note: Note; onBack: () => void
 
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
           {tags.map((t) => (
-            <span key={t} className="inline-flex items-center gap-1 rounded-md bg-secondary py-0.5 pl-2 pr-1 text-xs text-secondary-foreground">
+            <span
+              key={t}
+              className="inline-flex items-center gap-1 rounded-md bg-secondary py-0.5 pl-2 pr-1 text-xs text-secondary-foreground"
+            >
               #{t}
               <button
                 type="button"

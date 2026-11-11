@@ -36,9 +36,15 @@ export const Route = createFileRoute("/routines")({
   head: () => ({
     meta: [
       { title: "Routines — NEXORA" },
-      { name: "description", content: "Build habits with recurring routines, daily check-ins and streaks." },
+      {
+        name: "description",
+        content: "Build habits with recurring routines, daily check-ins and streaks.",
+      },
       { property: "og:title", content: "Routines — NEXORA" },
-      { property: "og:description", content: "Build habits with recurring routines, daily check-ins and streaks." },
+      {
+        property: "og:description",
+        content: "Build habits with recurring routines, daily check-ins and streaks.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -147,7 +153,9 @@ function RoutineCard({
   const best = bestStreak(routine, today);
   const rate = completionRate(routine, 30, today);
   const created = toDateKey(new Date(routine.createdAt));
-  const history = Array.from({ length: HISTORY_DAYS }, (_, i) => shiftKey(today, i - HISTORY_DAYS + 1));
+  const history = Array.from({ length: HISTORY_DAYS }, (_, i) =>
+    shiftKey(today, i - HISTORY_DAYS + 1),
+  );
 
   const toggle = () => {
     if (setRoutineDone(routine.id, !doneToday, today)) {
@@ -162,12 +170,19 @@ function RoutineCard({
           <h2 className="break-words font-semibold">{routine.name}</h2>
           <p className="mt-0.5 text-xs text-muted-foreground">{describeSchedule(routine.days)}</p>
           {routine.description && (
-            <p className="mt-2 line-clamp-2 break-words text-sm text-muted-foreground">{routine.description}</p>
+            <p className="mt-2 line-clamp-2 break-words text-sm text-muted-foreground">
+              {routine.description}
+            </p>
           )}
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="size-8 shrink-0" aria-label={`Actions for ${routine.name}`}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8 shrink-0"
+              aria-label={`Actions for ${routine.name}`}
+            >
               <MoreHorizontal />
             </Button>
           </DropdownMenuTrigger>
@@ -176,7 +191,10 @@ function RoutineCard({
               <Pencil /> Edit
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive focus:text-destructive" onSelect={onDelete}>
+            <DropdownMenuItem
+              className="text-destructive focus:text-destructive"
+              onSelect={onDelete}
+            >
               <Trash2 /> Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -211,7 +229,15 @@ function RoutineCard({
             const done = isCompletedOn(routine, key);
             const beforeStart = key < created;
             const label = `${format(fromDateKey(key), "EEE, MMM d")} — ${
-              done ? "Completed" : beforeStart ? "Before routine started" : !scheduled ? "Not scheduled" : key === today ? "Pending" : "Missed"
+              done
+                ? "Completed"
+                : beforeStart
+                  ? "Before routine started"
+                  : !scheduled
+                    ? "Not scheduled"
+                    : key === today
+                      ? "Pending"
+                      : "Missed"
             }`;
             return (
               <Tooltip key={key}>
@@ -241,7 +267,12 @@ function RoutineCard({
 
       <div className="mt-5 flex items-center justify-end border-t pt-4">
         {scheduledToday ? (
-          <Button variant={doneToday ? "outline" : "default"} size="sm" onClick={toggle} aria-pressed={doneToday}>
+          <Button
+            variant={doneToday ? "outline" : "default"}
+            size="sm"
+            onClick={toggle}
+            aria-pressed={doneToday}
+          >
             <Check /> {doneToday ? "Done today — undo" : "Mark done today"}
           </Button>
         ) : (

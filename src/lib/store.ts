@@ -101,7 +101,13 @@ export function updateTask(id: string, input: TaskInput): boolean {
     ...s,
     tasks: s.tasks.map((x) =>
       x.id === id
-        ? { ...x, ...input, title: input.title.trim(), description: input.description.trim(), updatedAt: now() }
+        ? {
+            ...x,
+            ...input,
+            title: input.title.trim(),
+            description: input.description.trim(),
+            updatedAt: now(),
+          }
         : x,
     ),
   }));
@@ -111,7 +117,9 @@ export function setTaskCompleted(id: string, completed: boolean): boolean {
   return commit((s) => ({
     ...s,
     tasks: s.tasks.map((x) =>
-      x.id === id ? { ...x, completed, completedAt: completed ? now() : null, updatedAt: now() } : x,
+      x.id === id
+        ? { ...x, completed, completedAt: completed ? now() : null, updatedAt: now() }
+        : x,
     ),
   }));
 }
@@ -121,7 +129,9 @@ export function deleteTask(id: string): boolean {
 }
 
 /* Notes */
-export function addNote(partial: Partial<Pick<Note, "title" | "content" | "tags">> = {}): Note | null {
+export function addNote(
+  partial: Partial<Pick<Note, "title" | "content" | "tags">> = {},
+): Note | null {
   const t = now();
   const note: Note = {
     id: uid(),
@@ -134,7 +144,10 @@ export function addNote(partial: Partial<Pick<Note, "title" | "content" | "tags"
   return commit((s) => ({ ...s, notes: [note, ...s.notes] })) ? note : null;
 }
 
-export function updateNote(id: string, patch: Partial<Pick<Note, "title" | "content" | "tags">>): boolean {
+export function updateNote(
+  id: string,
+  patch: Partial<Pick<Note, "title" | "content" | "tags">>,
+): boolean {
   return commit((s) => ({
     ...s,
     notes: s.notes.map((n) => (n.id === id ? { ...n, ...patch, updatedAt: now() } : n)),
@@ -158,7 +171,10 @@ export function addInboxItem(content: string, category: InboxCategory): InboxIte
   return commit((s) => ({ ...s, inbox: [item, ...s.inbox] })) ? item : null;
 }
 
-export function updateInboxItem(id: string, patch: Partial<Pick<InboxItem, "content" | "category">>): boolean {
+export function updateInboxItem(
+  id: string,
+  patch: Partial<Pick<InboxItem, "content" | "category">>,
+): boolean {
   return commit((s) => ({
     ...s,
     inbox: s.inbox.map((i) => (i.id === id ? { ...i, ...patch } : i)),
@@ -168,7 +184,9 @@ export function updateInboxItem(id: string, patch: Partial<Pick<InboxItem, "cont
 export function setInboxProcessed(id: string, processed: boolean): boolean {
   return commit((s) => ({
     ...s,
-    inbox: s.inbox.map((i) => (i.id === id ? { ...i, processed, processedAt: processed ? now() : null } : i)),
+    inbox: s.inbox.map((i) =>
+      i.id === id ? { ...i, processed, processedAt: processed ? now() : null } : i,
+    ),
   }));
 }
 
@@ -254,7 +272,12 @@ export function updateRoutine(id: string, input: RoutineInput): boolean {
     ...s,
     routines: s.routines.map((r) =>
       r.id === id
-        ? { ...r, name: input.name.trim(), description: input.description.trim(), days: [...input.days].sort() }
+        ? {
+            ...r,
+            name: input.name.trim(),
+            description: input.description.trim(),
+            days: [...input.days].sort(),
+          }
         : r,
     ),
   }));

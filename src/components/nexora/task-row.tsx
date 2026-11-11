@@ -52,7 +52,9 @@ export function TaskRow({
         checked={task.completed}
         onCheckedChange={() => toggleTaskWithFeedback(task)}
         className="mt-0.5"
-        aria-label={task.completed ? `Mark "${task.title}" as not done` : `Complete "${task.title}"`}
+        aria-label={
+          task.completed ? `Mark "${task.title}" as not done` : `Complete "${task.title}"`
+        }
       />
       <div className="min-w-0 flex-1">
         <label
@@ -65,7 +67,9 @@ export function TaskRow({
           {task.title}
         </label>
         {!compact && task.description && (
-          <p className="mt-0.5 line-clamp-2 break-words text-sm text-muted-foreground">{task.description}</p>
+          <p className="mt-0.5 line-clamp-2 break-words text-sm text-muted-foreground">
+            {task.description}
+          </p>
         )}
         <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
           <PriorityBadge priority={task.priority} />
@@ -85,7 +89,12 @@ export function TaskRow({
       {(onEdit || onDelete) && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="size-8 shrink-0" aria-label={`Actions for "${task.title}"`}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8 shrink-0"
+              aria-label={`Actions for "${task.title}"`}
+            >
               <MoreHorizontal />
             </Button>
           </DropdownMenuTrigger>
@@ -97,7 +106,10 @@ export function TaskRow({
             )}
             {onEdit && onDelete && <DropdownMenuSeparator />}
             {onDelete && (
-              <DropdownMenuItem className="text-destructive focus:text-destructive" onSelect={() => onDelete(task)}>
+              <DropdownMenuItem
+                className="text-destructive focus:text-destructive"
+                onSelect={() => onDelete(task)}
+              >
                 <Trash2 /> Delete
               </DropdownMenuItem>
             )}

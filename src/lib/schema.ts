@@ -62,14 +62,24 @@ export function parseAppData(input: unknown): AppData {
 
 /* Form validation */
 export const taskFormSchema = z.object({
-  title: z.string().trim().min(1, "Give the task a title").max(200, "Keep the title under 200 characters"),
+  title: z
+    .string()
+    .trim()
+    .min(1, "Give the task a title")
+    .max(200, "Keep the title under 200 characters"),
   description: z.string().max(5000, "Description is too long"),
-  dueDate: z.string().refine((v) => v === "" || /^\d{4}-\d{2}-\d{2}$/.test(v), "Enter a valid date"),
+  dueDate: z
+    .string()
+    .refine((v) => v === "" || /^\d{4}-\d{2}-\d{2}$/.test(v), "Enter a valid date"),
   priority: z.enum(["low", "medium", "high"]),
 });
 
 export const routineFormSchema = z.object({
-  name: z.string().trim().min(1, "Give the routine a name").max(80, "Keep the name under 80 characters"),
+  name: z
+    .string()
+    .trim()
+    .min(1, "Give the routine a name")
+    .max(80, "Keep the name under 80 characters"),
   description: z.string().max(500, "Description is too long"),
   days: z.array(z.number()).min(1, "Pick at least one day"),
 });

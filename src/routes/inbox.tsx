@@ -31,7 +31,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { ConfirmDialog } from "@/components/nexora/confirm-dialog";
 import { EmptyState } from "@/components/nexora/empty-state";
@@ -54,9 +60,15 @@ export const Route = createFileRoute("/inbox")({
   head: () => ({
     meta: [
       { title: "Inbox — NEXORA" },
-      { name: "description", content: "Capture tasks, notes and ideas fast, then sort them when you're ready." },
+      {
+        name: "description",
+        content: "Capture tasks, notes and ideas fast, then sort them when you're ready.",
+      },
       { property: "og:title", content: "Inbox — NEXORA" },
-      { property: "og:description", content: "Capture tasks, notes and ideas fast, then sort them when you're ready." },
+      {
+        property: "og:description",
+        content: "Capture tasks, notes and ideas fast, then sort them when you're ready.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -106,7 +118,10 @@ function InboxPage() {
     const note = convertInboxToNote(item.id);
     if (note) {
       toast.success("Converted to note", {
-        action: { label: "Open note", onClick: () => navigate({ to: "/notes", search: { id: note.id } }) },
+        action: {
+          label: "Open note",
+          onClick: () => navigate({ to: "/notes", search: { id: note.id } }),
+        },
       });
     }
   };
@@ -131,7 +146,11 @@ function InboxPage() {
       </Card>
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div role="tablist" aria-label="Inbox view" className="flex w-fit gap-1 rounded-lg bg-secondary p-1">
+        <div
+          role="tablist"
+          aria-label="Inbox view"
+          className="flex w-fit gap-1 rounded-lg bg-secondary p-1"
+        >
           {(
             [
               ["open", "To process"],
@@ -197,18 +216,32 @@ function InboxPage() {
         <ul className="space-y-2">
           {visible.map((item) => (
             <li key={item.id}>
-              <Card className={cn("flex items-start gap-3 p-4 transition-colors duration-150", item.processed && "bg-card/60")}>
+              <Card
+                className={cn(
+                  "flex items-start gap-3 p-4 transition-colors duration-150",
+                  item.processed && "bg-card/60",
+                )}
+              >
                 <div className="min-w-0 flex-1">
                   <div className="mb-1.5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                    <span className="rounded border px-1.5 py-0.5 font-medium">{CATEGORY_LABEL[item.category]}</span>
-                    <span>{formatDistanceToNow(new Date(item.createdAt), { addSuffix: true })}</span>
+                    <span className="rounded border px-1.5 py-0.5 font-medium">
+                      {CATEGORY_LABEL[item.category]}
+                    </span>
+                    <span>
+                      {formatDistanceToNow(new Date(item.createdAt), { addSuffix: true })}
+                    </span>
                     {item.processed && (
                       <span className="inline-flex items-center gap-1">
                         <Check className="size-3" /> Processed
                       </span>
                     )}
                   </div>
-                  <p className={cn("whitespace-pre-wrap break-words text-sm", item.processed && "text-muted-foreground")}>
+                  <p
+                    className={cn(
+                      "whitespace-pre-wrap break-words text-sm",
+                      item.processed && "text-muted-foreground",
+                    )}
+                  >
                     {item.content}
                   </p>
                   {!item.processed && (
@@ -227,7 +260,12 @@ function InboxPage() {
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="size-8 shrink-0" aria-label="Entry actions">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="size-8 shrink-0"
+                      aria-label="Entry actions"
+                    >
                       <MoreHorizontal />
                     </Button>
                   </DropdownMenuTrigger>
@@ -250,7 +288,10 @@ function InboxPage() {
                       </>
                     )}
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-destructive focus:text-destructive" onSelect={() => setDeleting(item)}>
+                    <DropdownMenuItem
+                      className="text-destructive focus:text-destructive"
+                      onSelect={() => setDeleting(item)}
+                    >
                       <Trash2 /> Delete
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -278,7 +319,9 @@ function InboxPage() {
 function EditInboxDialog({ item, onClose }: { item: InboxItem | null; onClose: () => void }) {
   return (
     <Dialog open={item !== null} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent>{item && <EditInboxForm key={item.id} item={item} onClose={onClose} />}</DialogContent>
+      <DialogContent>
+        {item && <EditInboxForm key={item.id} item={item} onClose={onClose} />}
+      </DialogContent>
     </Dialog>
   );
 }

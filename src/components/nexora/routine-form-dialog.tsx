@@ -61,7 +61,8 @@ export function RoutineFormDialog({
     const parsed = routineFormSchema.safeParse({ name, description, days });
     if (!parsed.success) {
       const next: Errors = {};
-      for (const issue of parsed.error.issues) next[issue.path[0] as keyof Errors] ??= issue.message;
+      for (const issue of parsed.error.issues)
+        next[issue.path[0] as keyof Errors] ??= issue.message;
       setErrors(next);
       return;
     }
@@ -125,7 +126,8 @@ export function RoutineFormDialog({
                   size="sm"
                   variant="outline"
                   className={cn(
-                    sortedKey === p.days.join() && "border-primary bg-selected text-selected-foreground hover:bg-selected hover:text-selected-foreground",
+                    sortedKey === p.days.join() &&
+                      "border-primary bg-selected text-selected-foreground hover:bg-selected hover:text-selected-foreground",
                   )}
                   aria-pressed={sortedKey === p.days.join()}
                   onClick={() => {

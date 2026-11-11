@@ -6,7 +6,13 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ConfirmDialog } from "@/components/nexora/confirm-dialog";
 import { EmptyState } from "@/components/nexora/empty-state";
 import { PageHeader } from "@/components/nexora/page-header";
@@ -28,9 +34,15 @@ export const Route = createFileRoute("/tasks")({
   head: () => ({
     meta: [
       { title: "Tasks — NEXORA" },
-      { name: "description", content: "Plan, prioritize and complete your tasks with due dates and priorities." },
+      {
+        name: "description",
+        content: "Plan, prioritize and complete your tasks with due dates and priorities.",
+      },
       { property: "og:title", content: "Tasks — NEXORA" },
-      { property: "og:description", content: "Plan, prioritize and complete your tasks with due dates and priorities." },
+      {
+        property: "og:description",
+        content: "Plan, prioritize and complete your tasks with due dates and priorities.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -129,7 +141,9 @@ function TasksPage() {
                   <span
                     className={cn(
                       "rounded px-1.5 text-xs tabular-nums",
-                      tab.value === "overdue" && counts.overdue > 0 ? "text-destructive" : "text-muted-foreground",
+                      tab.value === "overdue" && counts.overdue > 0
+                        ? "text-destructive"
+                        : "text-muted-foreground",
                     )}
                   >
                     {counts[tab.value]}
@@ -150,7 +164,10 @@ function TasksPage() {
                 />
               </div>
               <div className="grid grid-cols-2 gap-2 sm:flex">
-                <Select value={priority} onValueChange={(v) => setPriority(v as TaskPriorityFilter)}>
+                <Select
+                  value={priority}
+                  onValueChange={(v) => setPriority(v as TaskPriorityFilter)}
+                >
                   <SelectTrigger className="sm:w-40" aria-label="Filter by priority">
                     <SelectValue />
                   </SelectTrigger>

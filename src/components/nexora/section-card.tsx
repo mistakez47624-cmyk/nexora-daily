@@ -38,7 +38,12 @@ export function StatCard({
   return (
     <Card className="min-w-0 p-5">
       <p className="eyebrow">{label}</p>
-      <p className={cn("mt-2 text-2xl font-semibold tabular-nums tracking-tight", tone === "danger" && "text-destructive")}>
+      <p
+        className={cn(
+          "mt-2 text-2xl font-semibold tabular-nums tracking-tight",
+          tone === "danger" && "text-destructive",
+        )}
+      >
         {value}
       </p>
       {hint && <p className="mt-1 truncate text-xs text-muted-foreground">{hint}</p>}
