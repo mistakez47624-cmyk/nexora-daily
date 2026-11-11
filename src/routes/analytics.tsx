@@ -192,7 +192,7 @@ function AnalyticsPage() {
               <ChartContainer config={statusConfig} className="aspect-square w-44 shrink-0">
                 <PieChart>
                   <ChartTooltip content={<ChartTooltipContent nameKey="key" hideLabel />} />
-                  <Pie
+                  <Pie isAnimationActive={false}
                     cx="50%"
                     cy="50%"
                     data={pieData}
