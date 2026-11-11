@@ -169,6 +169,7 @@ function AnalyticsPage() {
                   }
                 />
                 <Bar
+                  isAnimationActive={false}
                   dataKey="completed"
                   fill="var(--color-completed)"
                   radius={[4, 4, 0, 0]}
@@ -286,6 +287,7 @@ function AnalyticsPage() {
                   }
                 />
                 <Bar
+                  isAnimationActive={false}
                   dataKey="rate"
                   fill="var(--color-rate)"
                   radius={[0, 4, 4, 0]}
