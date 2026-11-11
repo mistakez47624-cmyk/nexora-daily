@@ -254,9 +254,9 @@ function RoutineCard({
                           ? "bg-secondary/30"
                           : !scheduled
                             ? "bg-secondary/50"
-                          : key === today
-                            ? "border border-dashed border-muted-foreground/50"
-                            : "bg-secondary",
+                            : key === today
+                              ? "border border-dashed border-muted-foreground/50"
+                              : "bg-secondary",
                     )}
                   />
                 </TooltipTrigger>

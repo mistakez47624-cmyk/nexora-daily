@@ -28,3 +28,12 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- All app data lives in browser localStorage via `src/lib/store.ts` (useSyncExternalStore); components never touch localStorage for core data directly. Why: one persistence path keeps saving, import/export and cross-tab sync consistent.
+- Backup import and stored data are validated with the zod schema in `src/lib/schema.ts`. Why: corrupted or foreign JSON must never crash the app.
+- Pure business rules (overdue, sorting, streaks, completion rates, analytics) live in `src/lib/*.ts` and are covered by `src/test/rules.test.ts`. Why: logic stays testable apart from UI.
+- Page content renders only after hydration (AppShell gate). Why: data comes from localStorage, so server HTML can't know it.
+- Theme is a `dark` class on `<html>`, set by an inline head script before paint. Why: prevents a theme flash on load.
+- Shared app components live in `src/components/nexora/`; shadcn primitives in `src/components/ui/` are styled via tokens in `src/styles.css`.
