@@ -188,11 +188,13 @@ function AnalyticsPage() {
               description="Add tasks to see their status breakdown."
             />
           ) : (
-            <div className="flex flex-col items-center gap-4 p-2 sm:flex-row lg:flex-col xl:flex-row">
-              <ChartContainer config={statusConfig} className="aspect-square h-48 w-48 shrink-0">
+            <div className="flex flex-col items-center gap-4 p-3 sm:flex-row lg:flex-col">
+              <ChartContainer config={statusConfig} className="aspect-square w-44 shrink-0">
                 <PieChart>
                   <ChartTooltip content={<ChartTooltipContent nameKey="key" hideLabel />} />
                   <Pie
+                    cx="50%"
+                    cy="50%"
                     data={pieData}
                     dataKey="value"
                     nameKey="key"
