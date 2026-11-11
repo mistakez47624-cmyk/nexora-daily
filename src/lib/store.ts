@@ -177,7 +177,7 @@ export function deleteInboxItem(id: string): boolean {
 }
 
 function splitCapture(content: string) {
-  const [first, ...rest] = content.trim().split("\n");
+  const [first = "", ...rest] = content.trim().split("\n");
   const title = first.trim().slice(0, 200);
   const body = [first.length > 200 ? first.slice(200) : "", ...rest].join("\n").trim();
   return { title, body };

@@ -27,10 +27,12 @@ const PRESETS: { label: string; days: number[] }[] = [
   { label: "Weekends", days: [0, 6] },
 ];
 
+const EVERY_DAY = [0, 1, 2, 3, 4, 5, 6];
+
 // Monday-first display order
 const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
 
-type Errors = Partial<Record<"name" | "description" | "days", string>>;
+type Errors = Partial<Record<"name" | "description" | "days", string | undefined>>;
 
 export function RoutineFormDialog({
   open,
@@ -43,14 +45,14 @@ export function RoutineFormDialog({
 }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [days, setDays] = useState<number[]>(PRESETS[0].days);
+  const [days, setDays] = useState<number[]>(EVERY_DAY);
   const [errors, setErrors] = useState<Errors>({});
 
   useEffect(() => {
     if (!open) return;
     setName(routine?.name ?? "");
     setDescription(routine?.description ?? "");
-    setDays(routine?.days ?? PRESETS[0].days);
+    setDays(routine?.days ?? EVERY_DAY);
     setErrors({});
   }, [open, routine]);
 
@@ -152,7 +154,7 @@ export function RoutineFormDialog({
                   className="h-9 border text-xs data-[state=on]:border-primary"
                   aria-label={WEEKDAY_SHORT[d]}
                 >
-                  {WEEKDAY_SHORT[d].slice(0, 2)}
+                  {WEEKDAY_SHORT[d]?.slice(0, 2)}
                 </ToggleGroupItem>
               ))}
             </ToggleGroup>

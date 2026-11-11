@@ -47,7 +47,7 @@ export function currentStreak(routine: Routine, today: string = todayKey()): num
 export function bestStreak(routine: Routine, today: string = todayKey()): number {
   if (routine.completions.length === 0) return 0;
   const done = new Set(routine.completions);
-  const first = [...routine.completions].sort()[0];
+  const first = [...routine.completions].sort()[0] ?? createdKey(routine);
   const start = first < createdKey(routine) ? first : createdKey(routine);
   let best = 0;
   let run = 0;

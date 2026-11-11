@@ -19,7 +19,7 @@ import { addTask, updateTask } from "@/lib/store";
 import type { Priority, Task } from "@/lib/types";
 import { FieldError } from "./field-error";
 
-type Errors = Partial<Record<"title" | "description" | "dueDate", string>>;
+type Errors = Partial<Record<"title" | "description" | "dueDate", string | undefined>>;
 
 export function TaskFormDialog({
   open,
