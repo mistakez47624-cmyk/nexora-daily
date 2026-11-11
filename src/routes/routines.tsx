@@ -205,7 +205,7 @@ function RoutineCard({
 
       <div className="mt-4">
         <p className="eyebrow mb-2">Last {HISTORY_DAYS} days</p>
-        <div className="grid grid-cols-14 gap-1" style={{ gridTemplateColumns: `repeat(${HISTORY_DAYS}, minmax(0, 1fr))` }}>
+        <div className="grid grid-cols-14 gap-1">
           {history.map((key) => {
             const scheduled = isScheduledOn(routine, key);
             const done = isCompletedOn(routine, key);
