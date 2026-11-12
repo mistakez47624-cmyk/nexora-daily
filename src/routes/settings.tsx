@@ -13,7 +13,13 @@ import { FieldError } from "@/components/nexora/field-error";
 import { PageHeader } from "@/components/nexora/page-header";
 import { nameSchema, parseAppData } from "@/lib/schema";
 import { clearAllData, exportData, replaceAllData, setProfileName, useAppData } from "@/lib/store";
-import { setTheme, useTheme } from "@/lib/theme";
+import {
+  ACCENTS,
+  setAccent,
+  setTheme,
+  useAccent,
+  useTheme,
+} from "@/lib/theme";
 import type { AppData, Theme } from "@/lib/types";
 import { cn, pluralize } from "@/lib/utils";
 
@@ -40,6 +46,7 @@ export const Route = createFileRoute("/settings")({
 function SettingsPage() {
   const data = useAppData();
   const theme = useTheme();
+  const accent = useAccent();
   const [name, setName] = useState(data.profile.name);
   const [nameError, setNameError] = useState<string>();
   const [pendingImport, setPendingImport] = useState<AppData | null>(null);
@@ -97,6 +104,7 @@ function SettingsPage() {
     pluralize(data.notes.length, "note"),
     pluralize(data.inbox.length, "inbox entry", "inbox entries"),
     pluralize(data.routines.length, "routine"),
+    pluralize(data.mailAccounts.length, "mailbox", "mailboxes"),
   ].join(" · ");
 
   return (
@@ -178,10 +186,44 @@ function SettingsPage() {
               </button>
             ))}
           </div>
+
+        </SettingsSection>
+
+        <SettingsSection
+          title="Accent colour"
+          description="Choose the highlight colour used throughout NEXORA."
+        >
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {ACCENTS.map((item) => (
+              <button
+                key={item.value}
+                type="button"
+                onClick={() => {
+                  setAccent(item.value);
+                  toast.success(`${item.label} accent applied`);
+                }}
+                aria-pressed={accent === item.value}
+                className={cn(
+                  "flex items-center gap-3 rounded-lg border p-3 text-left transition-all hover:bg-accent/50",
+                  accent === item.value && "border-primary bg-selected",
+                )}
+              >
+                <span
+                  className="size-6 shrink-0 rounded-full border border-white/20"
+                  style={{ backgroundColor: item.color }}
+                />
+                <span className="text-sm font-medium">{item.label}</span>
+                {accent === item.value && (
+                  <span className="ml-auto text-primary">✓</span>
+                )}
+              </button>
+            ))}
+          </div>
         </SettingsSection>
 
         <SettingsSection
           title="Your data"
+
           description={`Stored only in this browser. Currently: ${counts}.`}
         >
           <div className="flex flex-col gap-3 sm:flex-row">
@@ -203,7 +245,7 @@ function SettingsPage() {
 
         <SettingsSection
           title="Danger zone"
-          description="Permanently remove all tasks, notes, inbox entries, routines and your name from this browser."
+          description="Permanently remove tasks, notes, inbox entries, routines, connected mailboxes, and your name from this browser."
         >
           <Button variant="destructive" onClick={() => setConfirmClear(true)}>
             <Trash2 /> Clear all data

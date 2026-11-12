@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { CheckSquare, Plus, Search, SearchX } from "lucide-react";
 import { toast } from "sonner";
 
@@ -17,6 +17,7 @@ import { ConfirmDialog } from "@/components/nexora/confirm-dialog";
 import { EmptyState } from "@/components/nexora/empty-state";
 import { PageHeader } from "@/components/nexora/page-header";
 import { TaskFormDialog } from "@/components/nexora/task-form-dialog";
+import { TaskInsights } from "@/components/nexora/task-insights";
 import { TaskRow } from "@/components/nexora/task-row";
 import { todayKey } from "@/lib/dates";
 import { deleteTask, useAppData } from "@/lib/store";
@@ -36,12 +37,12 @@ export const Route = createFileRoute("/tasks")({
       { title: "Tasks — NEXORA" },
       {
         name: "description",
-        content: "Plan, prioritize and complete your tasks with due dates and priorities.",
+        content: "Plan tasks and see completion, overdue work, and routine consistency together.",
       },
       { property: "og:title", content: "Tasks — NEXORA" },
       {
         property: "og:description",
-        content: "Plan, prioritize and complete your tasks with due dates and priorities.",
+        content: "Plan tasks and see completion, overdue work, and routine consistency together.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -59,6 +60,7 @@ const STATUS_TABS: { value: TaskStatusFilter; label: string }[] = [
 
 function TasksPage() {
   const { tasks } = useAppData();
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<TaskStatusFilter>("active");
   const [priority, setPriority] = useState<TaskPriorityFilter>("all");
@@ -94,11 +96,21 @@ function TasksPage() {
     setStatus("all");
   };
 
+  const emailTask = (task: Task) => {
+    void navigate({
+      to: "/mail",
+      search: {
+        subject: task.title,
+        body: task.description,
+      },
+    });
+  };
+
   return (
     <div>
       <PageHeader
         title="Tasks"
-        description={`${pluralize(counts.active, "open task")}${counts.overdue ? ` · ${counts.overdue} overdue` : ""}`}
+        description={`${pluralize(counts.active, "open task")}${counts.overdue ? ` · ${counts.overdue} overdue` : ""}. Progress stays beside the list.`}
         actions={
           <Button onClick={openNew}>
             <Plus /> New task
@@ -106,11 +118,12 @@ function TasksPage() {
         }
       />
 
+      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
       {tasks.length === 0 ? (
         <EmptyState
           icon={CheckSquare}
           title="No tasks yet"
-          description="Create your first task to start planning your day."
+          description="Create your first task. Completion and overdue counts update beside the list as you go."
           action={
             <Button onClick={openNew}>
               <Plus /> New task
@@ -118,7 +131,7 @@ function TasksPage() {
           }
         />
       ) : (
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden bg-card">
           <div className="space-y-3 border-b p-3 sm:p-4">
             <div
               role="tablist"
@@ -218,6 +231,7 @@ function TasksPage() {
                       setFormOpen(true);
                     }}
                     onDelete={setDeleting}
+                    onEmail={emailTask}
                   />
                 ))}
               </div>
@@ -225,6 +239,8 @@ function TasksPage() {
           </div>
         </Card>
       )}
+        <TaskInsights />
+      </div>
 
       <TaskFormDialog open={formOpen} onOpenChange={setFormOpen} task={editing} />
       <ConfirmDialog

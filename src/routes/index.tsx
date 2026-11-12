@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { format, formatDistanceToNow, startOfWeek } from "date-fns";
-import { ArrowRight, CalendarClock, CheckCircle2, Repeat, StickyNote } from "lucide-react";
+import { ArrowRight, CalendarClock, CheckCircle2, Mail, Repeat, StickyNote } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -84,6 +84,15 @@ function Dashboard() {
           {greeting(now)}
           {name ? `, ${name}` : ""}
         </h1>
+        <Link
+          to="/mail"
+          className="mt-3 inline-flex items-center gap-2 text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+        >
+          <Mail className="size-4" />
+          {data.mailAccounts.length === 0
+            ? "Connect Gmail, Outlook, or another mailbox"
+            : `${data.mailAccounts.length === 1 ? "1 mailbox connected" : `${data.mailAccounts.length} mailboxes connected`} · send a message`}
+        </Link>
       </div>
 
       <Card className="p-4 sm:p-5">

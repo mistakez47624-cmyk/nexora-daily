@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { AppData } from "./types";
+import { MAIL_PROVIDER_IDS, type AppData } from "./types";
 
 const dateKey = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 const iso = z.string().min(1);
@@ -43,6 +43,22 @@ const routineSchema = z.object({
   createdAt: iso,
 });
 
+const mailAccountSchema = z.object({
+  id: z.string().min(1),
+  provider: z.enum(MAIL_PROVIDER_IDS),
+  email: z.string().email().max(120),
+  connectedAt: iso,
+});
+
+const sentMailSchema = z.object({
+  id: z.string().min(1),
+  accountId: z.string().min(1),
+  to: z.string().email().max(120),
+  subject: z.string().min(1).max(200),
+  body: z.string().max(20000),
+  sentAt: iso,
+});
+
 export const appDataSchema = z.object({
   version: z.literal(1).default(1),
   tasks: z.array(taskSchema).default([]),
@@ -50,10 +66,21 @@ export const appDataSchema = z.object({
   inbox: z.array(inboxSchema).default([]),
   routines: z.array(routineSchema).default([]),
   profile: z.object({ name: z.string().max(40).default("") }).default({ name: "" }),
+  mailAccounts: z.array(mailAccountSchema).default([]),
+  sentMail: z.array(sentMailSchema).default([]),
 });
 
 export function emptyData(): AppData {
-  return { version: 1, tasks: [], notes: [], inbox: [], routines: [], profile: { name: "" } };
+  return {
+    version: 1,
+    tasks: [],
+    notes: [],
+    inbox: [],
+    routines: [],
+    profile: { name: "" },
+    mailAccounts: [],
+    sentMail: [],
+  };
 }
 
 export function parseAppData(input: unknown): AppData {
@@ -95,3 +122,18 @@ export const nameSchema = z
   .trim()
   .min(1, "Enter a display name")
   .max(40, "Keep your name under 40 characters");
+
+export const mailConnectSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, "Enter the email address for this mailbox")
+    .email("Enter a valid email address")
+    .max(120, "That address is too long"),
+});
+
+export const mailDraftSchema = z.object({
+  to: z.string().trim().min(1, "Enter a recipient").email("Enter a valid recipient email").max(120),
+  subject: z.string().trim().min(1, "Add a subject").max(200, "Keep the subject under 200 characters"),
+  body: z.string().trim().min(1, "Write a message").max(20000, "That message is too long"),
+});

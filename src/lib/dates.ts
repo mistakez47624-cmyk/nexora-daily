@@ -36,7 +36,7 @@ export function formatDue(key: string, now: Date = new Date()): string {
 
 export function greeting(now: Date = new Date()): string {
   const h = now.getHours();
-  if (h < 5) return "Good evening";
+  if (h < 5) return "Good night";
   if (h < 12) return "Good morning";
   if (h < 18) return "Good afternoon";
   return "Good evening";

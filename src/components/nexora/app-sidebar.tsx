@@ -1,9 +1,9 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  BarChart3,
   CheckSquare,
   Inbox,
   LayoutDashboard,
+  Mail,
   Moon,
   Repeat,
   Settings,
@@ -33,9 +33,9 @@ const NAV = [
   { title: "Dashboard", to: "/", icon: LayoutDashboard },
   { title: "Inbox", to: "/inbox", icon: Inbox },
   { title: "Tasks", to: "/tasks", icon: CheckSquare },
+  { title: "Mail", to: "/mail", icon: Mail },
   { title: "Notes", to: "/notes", icon: StickyNote },
   { title: "Routines", to: "/routines", icon: Repeat },
-  { title: "Analytics", to: "/analytics", icon: BarChart3 },
   { title: "Settings", to: "/settings", icon: Settings },
 ] as const;
 
@@ -54,8 +54,10 @@ export function AppSidebar() {
   const isActive = (to: string) => (to === "/" ? pathname === "/" : pathname.startsWith(to));
 
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader className="h-14 justify-center border-b border-sidebar-border px-3 group-data-[collapsible=icon]:px-2">
+    <Sidebar
+  collapsible="icon"
+  className="border-r border-black/5 bg-[#EDE7FF]/25 shadow-[8px_0_40px_rgba(0,0,0,0.05)] backdrop-blur-2xl dark:!border-white/10 dark:!bg-[#100D1C]/65 dark:shadow-[8px_0_40px_rgba(0,0,0,0.12)]">
+      <SidebarHeader className="h-14 justify-center border-b border-white/10 bg-white/[0.025] px-3 backdrop-blur-xl group-data-[collapsible=icon]:px-2">
         <Link
           to="/"
           onClick={closeOnMobile}
@@ -71,7 +73,11 @@ export function AppSidebar() {
             <SidebarMenu className="gap-0.5">
               {NAV.map((item) => (
                 <SidebarMenuItem key={item.to}>
-                  <SidebarMenuButton asChild isActive={isActive(item.to)} tooltip={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={isActive(item.to)}
+                    tooltip={item.title}
+                    className="data-[active=true]:bg-white/10 data-[active=true]:backdrop-blur-xl data-[active=true]:ring-1 data-[active=true]:ring-white/10 data-[active=true]:font-medium data-[active=true]:text-white hover:bg-white/[0.07]">
                     <Link to={item.to} onClick={closeOnMobile}>
                       <item.icon strokeWidth={1.75} />
                       <span>{item.title}</span>
@@ -89,7 +95,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border">
+      <SidebarFooter className="border-t border-white/10 bg-white/[0.025] backdrop-blur-xl">
         <SidebarMenu className="gap-0.5">
           <SidebarMenuItem>
             <SidebarMenuButton

@@ -1,4 +1,4 @@
-import { CalendarDays, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { CalendarDays, Mail, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -30,11 +30,13 @@ export function TaskRow({
   task,
   onEdit,
   onDelete,
+  onEmail,
   compact = false,
 }: {
   task: Task;
   onEdit?: (task: Task) => void;
   onDelete?: (task: Task) => void;
+  onEmail?: (task: Task) => void;
   compact?: boolean;
 }) {
   const overdue = isOverdue(task);
@@ -86,7 +88,7 @@ export function TaskRow({
           )}
         </div>
       </div>
-      {(onEdit || onDelete) && (
+      {(onEdit || onDelete || onEmail) && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -104,7 +106,12 @@ export function TaskRow({
                 <Pencil /> Edit
               </DropdownMenuItem>
             )}
-            {onEdit && onDelete && <DropdownMenuSeparator />}
+            {onEmail && (
+              <DropdownMenuItem onSelect={() => onEmail(task)}>
+                <Mail /> Send by email
+              </DropdownMenuItem>
+            )}
+            {(onEdit || onEmail) && onDelete && <DropdownMenuSeparator />}
             {onDelete && (
               <DropdownMenuItem
                 className="text-destructive focus:text-destructive"

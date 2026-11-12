@@ -1,6 +1,10 @@
+
 import type { ReactNode } from "react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+
+const surfaceClass =
+  "min-w-0 border border-black/[0.06] bg-white/35 shadow-[0_8px_32px_rgba(31,24,55,0.04)] backdrop-blur-2xl transition-all duration-300 dark:border-white/[0.08] dark:bg-[#191522]/45 dark:shadow-[0_8px_32px_rgba(0,0,0,0.18)]";
 
 export function SectionCard({
   title,
@@ -14,8 +18,8 @@ export function SectionCard({
   className?: string;
 }) {
   return (
-    <Card className={cn("flex min-w-0 flex-col", className)}>
-      <div className="flex min-h-14 items-center justify-between gap-2 border-b px-5 py-3">
+    <Card className={cn("flex min-w-0 flex-col overflow-hidden", surfaceClass, className)}>
+      <div className="flex min-h-14 items-center justify-between gap-2 border-b border-black/[0.05] bg-white/15 px-5 py-3 dark:border-white/[0.07] dark:bg-white/[0.02]">
         <h2 className="text-sm font-semibold">{title}</h2>
         {action}
       </div>
@@ -36,7 +40,7 @@ export function StatCard({
   tone?: "default" | "danger";
 }) {
   return (
-    <Card className="min-w-0 p-5">
+    <Card className={cn("p-5", surfaceClass)}>
       <p className="eyebrow">{label}</p>
       <p
         className={cn(
@@ -50,3 +54,4 @@ export function StatCard({
     </Card>
   );
 }
+

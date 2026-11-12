@@ -49,6 +49,41 @@ export interface Profile {
   name: string;
 }
 
+export const MAIL_PROVIDER_IDS = [
+  "gmail",
+  "outlook",
+  "microsoft365",
+  "yahoo",
+  "icloud",
+  "proton",
+  "fastmail",
+  "zoho",
+  "aol",
+  "gmx",
+  "yandex",
+  "tuta",
+  "mailcom",
+  "other",
+] as const;
+
+export type MailProviderId = (typeof MAIL_PROVIDER_IDS)[number];
+
+export interface MailAccount {
+  id: string;
+  provider: MailProviderId;
+  email: string;
+  connectedAt: string;
+}
+
+export interface SentMessage {
+  id: string;
+  accountId: string;
+  to: string;
+  subject: string;
+  body: string;
+  sentAt: string;
+}
+
 export interface AppData {
   version: 1;
   tasks: Task[];
@@ -56,6 +91,8 @@ export interface AppData {
   inbox: InboxItem[];
   routines: Routine[];
   profile: Profile;
+  mailAccounts: MailAccount[];
+  sentMail: SentMessage[];
 }
 
 export type Theme = "dark" | "light";

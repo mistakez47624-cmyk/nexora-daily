@@ -2,7 +2,18 @@ import { useSyncExternalStore } from "react";
 import { toast } from "sonner";
 import { emptyData, parseAppData } from "./schema";
 import { todayKey } from "./dates";
-import type { AppData, InboxCategory, InboxItem, Note, Priority, Routine, Task } from "./types";
+import type {
+  AppData,
+  InboxCategory,
+  InboxItem,
+  MailAccount,
+  MailProviderId,
+  Note,
+  Priority,
+  Routine,
+  SentMessage,
+  Task,
+} from "./types";
 
 export const STORAGE_KEY = "nexora:data:v1";
 
@@ -298,6 +309,46 @@ export function setRoutineDone(id: string, done: boolean, key: string = todayKey
 
 export function deleteRoutine(id: string): boolean {
   return commit((s) => ({ ...s, routines: s.routines.filter((r) => r.id !== id) }));
+}
+
+/* Mail */
+export function connectMailAccount(provider: MailProviderId, email: string): MailAccount | null {
+  ensureLoaded();
+  const normalized = email.trim().toLowerCase();
+  if (state.mailAccounts.some((account) => account.provider === provider && account.email === normalized)) {
+    return null;
+  }
+  const account: MailAccount = {
+    id: uid(),
+    provider,
+    email: normalized,
+    connectedAt: now(),
+  };
+  return commit((s) => ({ ...s, mailAccounts: [...s.mailAccounts, account] })) ? account : null;
+}
+
+export function disconnectMailAccount(id: string): boolean {
+  return commit((s) => ({
+    ...s,
+    mailAccounts: s.mailAccounts.filter((account) => account.id !== id),
+  }));
+}
+
+export function recordSentMail(input: {
+  accountId: string;
+  to: string;
+  subject: string;
+  body: string;
+}): SentMessage | null {
+  const message: SentMessage = {
+    id: uid(),
+    accountId: input.accountId,
+    to: input.to.trim(),
+    subject: input.subject.trim(),
+    body: input.body.trim(),
+    sentAt: now(),
+  };
+  return commit((s) => ({ ...s, sentMail: [message, ...s.sentMail] })) ? message : null;
 }
 
 /* Profile & data */

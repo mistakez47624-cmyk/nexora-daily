@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { completionsByDay, taskStatusBreakdown } from "@/lib/analytics";
+import { composeLink, MAIL_PROVIDERS, mailtoUrl } from "@/lib/mail";
 import { bestStreak, completionRate, currentStreak, describeSchedule } from "@/lib/routines";
 import { parseAppData } from "@/lib/schema";
 import { filterTasks, isOverdue, sortTasks, upcomingTasks } from "@/lib/tasks";
@@ -168,6 +169,56 @@ describe("backup import", () => {
   });
   it("accepts a valid backup and fills in defaults", () => {
     const data = parseAppData({ tasks: [], notes: [] });
-    expect(data).toMatchObject({ version: 1, inbox: [], routines: [], profile: { name: "" } });
+    expect(data).toMatchObject({
+      version: 1,
+      inbox: [],
+      routines: [],
+      profile: { name: "" },
+      mailAccounts: [],
+      sentMail: [],
+    });
+  });
+});
+
+describe("mail handoff", () => {
+  const draft = {
+    from: "me@gmail.com",
+    to: "ada@example.com",
+    subject: "Hello",
+    body: "See you soon",
+  };
+
+  it("lists every supported mail service", () => {
+    expect(MAIL_PROVIDERS.map((provider) => provider.id)).toEqual([
+      "gmail",
+      "outlook",
+      "microsoft365",
+      "yahoo",
+      "icloud",
+      "proton",
+      "fastmail",
+      "zoho",
+      "aol",
+      "gmx",
+      "yandex",
+      "tuta",
+      "mailcom",
+      "other",
+    ]);
+  });
+
+  it("opens Gmail compose with the sender, recipient, subject, and body", () => {
+    const link = composeLink("gmail", draft);
+    expect(link.truncated).toBe(false);
+    expect(link.url).toContain("mail.google.com");
+    expect(link.url).toContain(encodeURIComponent(draft.to));
+    expect(link.url).toContain(encodeURIComponent(draft.subject));
+    expect(link.url).toContain(encodeURIComponent(draft.body));
+    expect(link.url).toContain(encodeURIComponent(draft.from));
+  });
+
+  it("uses a mailto link for services without a web compose page", () => {
+    expect(composeLink("proton", draft).url).toBe(mailtoUrl(draft, draft.body));
+    expect(composeLink("icloud", draft).url.startsWith("mailto:")).toBe(true);
   });
 });
