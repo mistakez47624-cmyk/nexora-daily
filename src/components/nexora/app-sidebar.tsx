@@ -3,6 +3,7 @@ import {
   CheckSquare,
   Inbox,
   LayoutDashboard,
+  LogOut,
   Mail,
   Moon,
   Repeat,
@@ -28,6 +29,8 @@ import { useAppData } from "@/lib/store";
 import { setTheme, useTheme } from "@/lib/theme";
 import { Wordmark } from "./wordmark";
 import { initials } from "@/lib/utils";
+import { useAuth } from "@/lib/auth";
+import { toast } from "sonner";
 
 const NAV = [
   { title: "Dashboard", to: "/", icon: LayoutDashboard },
@@ -43,9 +46,10 @@ export function AppSidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { setOpenMobile, isMobile } = useSidebar();
   const data = useAppData();
+  const auth = useAuth();
   const theme = useTheme();
   const unprocessed = data.inbox.filter((i) => !i.processed).length;
-  const name = data.profile.name || "Guest";
+  const name = data.profile.name || auth.user?.email || "Guest";
 
   const closeOnMobile = () => {
     if (isMobile) setOpenMobile(false);
@@ -55,8 +59,9 @@ export function AppSidebar() {
 
   return (
     <Sidebar
-  collapsible="icon"
-  className="border-r border-black/5 bg-[#EDE7FF]/25 shadow-[8px_0_40px_rgba(0,0,0,0.05)] backdrop-blur-2xl dark:!border-white/10 dark:!bg-[#100D1C]/65 dark:shadow-[8px_0_40px_rgba(0,0,0,0.12)]">
+      collapsible="icon"
+      className="border-r border-black/5 bg-[#EDE7FF]/25 shadow-[8px_0_40px_rgba(0,0,0,0.05)] backdrop-blur-2xl dark:!border-white/10 dark:!bg-[#100D1C]/65 dark:shadow-[8px_0_40px_rgba(0,0,0,0.12)]"
+    >
       <SidebarHeader className="h-14 justify-center border-b border-white/10 bg-white/[0.025] px-3 backdrop-blur-xl group-data-[collapsible=icon]:px-2">
         <Link
           to="/"
@@ -77,7 +82,8 @@ export function AppSidebar() {
                     asChild
                     isActive={isActive(item.to)}
                     tooltip={item.title}
-                    className="data-[active=true]:bg-white/10 data-[active=true]:backdrop-blur-xl data-[active=true]:ring-1 data-[active=true]:ring-white/10 data-[active=true]:font-medium data-[active=true]:text-white hover:bg-white/[0.07]">
+                    className="data-[active=true]:bg-white/10 data-[active=true]:backdrop-blur-xl data-[active=true]:ring-1 data-[active=true]:ring-white/10 data-[active=true]:font-medium data-[active=true]:text-white hover:bg-white/[0.07]"
+                  >
                     <Link to={item.to} onClick={closeOnMobile}>
                       <item.icon strokeWidth={1.75} />
                       <span>{item.title}</span>
@@ -119,6 +125,24 @@ export function AppSidebar() {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
+          {auth.status === "signed-in" && (
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                tooltip="Sign out"
+                onClick={() => {
+                  void auth.signOut().catch((error: unknown) =>
+                    toast.error("Couldn’t sign out", {
+                      description:
+                        error instanceof Error ? error.message : "Try again after sync finishes.",
+                    }),
+                  );
+                }}
+              >
+                <LogOut strokeWidth={1.75} />
+                <span>Sign out</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )}
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>

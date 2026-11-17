@@ -80,10 +80,12 @@ function MailPage() {
 
   const sent = useMemo(
     () =>
-      [...data.sentMail].sort((a, b) => b.sentAt.localeCompare(a.sentAt)).map((message) => ({
-        ...message,
-        account: accounts.find((account) => account.id === message.accountId) ?? null,
-      })),
+      [...data.sentMail]
+        .sort((a, b) => b.sentAt.localeCompare(a.sentAt))
+        .map((message) => ({
+          ...message,
+          account: accounts.find((account) => account.id === message.accountId) ?? null,
+        })),
     [data.sentMail, accounts],
   );
 
@@ -102,7 +104,8 @@ function MailPage() {
       const next: Partial<Record<"to" | "subject" | "body", string>> = {};
       for (const issue of parsed.error.issues) {
         const key = issue.path[0];
-        if ((key === "to" || key === "subject" || key === "body") && !next[key]) next[key] = issue.message;
+        if ((key === "to" || key === "subject" || key === "body") && !next[key])
+          next[key] = issue.message;
       }
       setErrors(next);
       return;
@@ -119,7 +122,10 @@ function MailPage() {
         ? `Opened in ${provider.name}. Confirm send there.`
         : "Opened in your mail app. Confirm send there.",
       link.truncated
-        ? { description: "A long message was shortened in the mail window. The full copy is in Sent." }
+        ? {
+            description:
+              "A long message was shortened in the mail window. The full copy is in Sent.",
+          }
         : undefined,
     );
   };
@@ -185,7 +191,11 @@ function MailPage() {
                   </ul>
                 )}
                 <div className="mt-auto flex flex-wrap gap-2">
-                  <Button size="sm" variant={connected.length > 0 ? "outline" : "default"} onClick={() => setConnecting(provider.id)}>
+                  <Button
+                    size="sm"
+                    variant={connected.length > 0 ? "outline" : "default"}
+                    onClick={() => setConnecting(provider.id)}
+                  >
                     {connected.length > 0 ? "Connect another" : "Connect"}
                   </Button>
                   {provider.mailboxUrl.startsWith("http") && (
@@ -255,7 +265,7 @@ function MailPage() {
                   aria-invalid={Boolean(errors.to)}
                   onChange={(event) => {
                     setDraft((current) => ({ ...current, to: event.target.value }));
-                    if (errors.to) setErrors((current) => ({ ...current, to: undefined }));
+                    if (errors.to) setErrors(({ to: _to, ...current }) => current);
                   }}
                 />
                 <FieldError id="mail-to-error" message={errors.to} />
@@ -269,7 +279,7 @@ function MailPage() {
                   aria-invalid={Boolean(errors.subject)}
                   onChange={(event) => {
                     setDraft((current) => ({ ...current, subject: event.target.value }));
-                    if (errors.subject) setErrors((current) => ({ ...current, subject: undefined }));
+                    if (errors.subject) setErrors(({ subject: _subject, ...current }) => current);
                   }}
                 />
                 <FieldError id="mail-subject-error" message={errors.subject} />
@@ -284,7 +294,7 @@ function MailPage() {
                   aria-invalid={Boolean(errors.body)}
                   onChange={(event) => {
                     setDraft((current) => ({ ...current, body: event.target.value }));
-                    if (errors.body) setErrors((current) => ({ ...current, body: undefined }));
+                    if (errors.body) setErrors(({ body: _body, ...current }) => current);
                   }}
                 />
                 <FieldError id="mail-body-error" message={errors.body} />
@@ -360,7 +370,12 @@ function ConnectDialog({
     <Dialog open={providerId !== null} onOpenChange={(open) => !open && onClose()}>
       <DialogContent>
         {providerId && (
-          <ConnectForm key={providerId} providerId={providerId} onClose={onClose} onConnected={onConnected} />
+          <ConnectForm
+            key={providerId}
+            providerId={providerId}
+            onClose={onClose}
+            onConnected={onConnected}
+          />
         )}
       </DialogContent>
     </Dialog>
@@ -389,7 +404,11 @@ function ConnectForm({
       return;
     }
     const normalized = parsed.data.email.toLowerCase();
-    if (data.mailAccounts.some((account) => account.provider === providerId && account.email === normalized)) {
+    if (
+      data.mailAccounts.some(
+        (account) => account.provider === providerId && account.email === normalized,
+      )
+    ) {
       setError("That mailbox is already connected");
       return;
     }
@@ -405,7 +424,8 @@ function ConnectForm({
       <DialogHeader>
         <DialogTitle>Connect {provider.name}</DialogTitle>
         <DialogDescription>
-          Enter the address you send from. NEXORA remembers it on this device and opens {provider.name} when you send. No password is stored.
+          Enter the address you send from. NEXORA remembers it on this device and opens{" "}
+          {provider.name} when you send. No password is stored.
         </DialogDescription>
       </DialogHeader>
       <div className="grid gap-2">

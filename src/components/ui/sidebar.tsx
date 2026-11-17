@@ -190,11 +190,8 @@ const Sidebar = React.forwardRef<
       return (
         <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
           <SheetContent
-            className="flex h-full w-full flex-col bg-transparent text-sidebar-foreground backdrop-blur-2xl group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow"
-            data-mobile="true"
             className="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
             data-mobile="true"
-            className="w-(--sidebar-width) bg-[#EDE7FF]/25 p-0 text-sidebar-foreground backdrop-blur-2xl dark:bg-[#100D1C]/60 [&>button]:hidden"
             style={
               {
                 "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -207,8 +204,8 @@ const Sidebar = React.forwardRef<
               <SheetDescription>Displays the mobile sidebar.</SheetDescription>
             </SheetHeader>
             <div className="flex h-full w-full flex-col border-r border-black/5 bg-[#EDE7FF]/25 text-sidebar-foreground shadow-[8px_0_40px_rgba(0,0,0,0.05)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#100D1C]/60 dark:shadow-[8px_0_40px_rgba(0,0,0,0.15)]">
-  {children}
-</div>
+              {children}
+            </div>
           </SheetContent>
         </Sheet>
       );
@@ -248,10 +245,7 @@ const Sidebar = React.forwardRef<
           )}
           {...props}
         >
-          <div
-            className="flex h-full w-full flex-col bg-white/45 text-sidebar-foreground backdrop-blur-2xl border-r border-black/[0.06] shadow-[8px_0_40px_rgba(0,0,0,0.04)] dark:!bg-[#100D1C]/60 dark:border-white/10 dark:shadow-[8px_0_40px_rgba(0,0,0,0.15)] group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow"
-            
-          >
+          <div className="flex h-full w-full flex-col bg-white/45 text-sidebar-foreground backdrop-blur-2xl border-r border-black/[0.06] shadow-[8px_0_40px_rgba(0,0,0,0.04)] dark:!bg-[#100D1C]/60 dark:border-white/10 dark:shadow-[8px_0_40px_rgba(0,0,0,0.15)] group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow">
             {children}
           </div>
         </div>

@@ -1,19 +1,10 @@
-
 import { useSyncExternalStore } from "react";
 import type { Theme } from "./types";
 
 export const THEME_KEY = "nexora:theme";
 export const ACCENT_KEY = "nexora:accent";
 
-export type Accent =
-  | "violet"
-  | "blue"
-  | "cyan"
-  | "pink"
-  | "rose"
-  | "green"
-  | "orange"
-  | "amber";
+export type Accent = "violet" | "blue" | "cyan" | "pink" | "rose" | "green" | "orange" | "amber";
 
 export const ACCENTS: { value: Accent; label: string; color: string }[] = [
   { value: "violet", label: "Violet", color: "#8B5CF6" },
@@ -57,14 +48,12 @@ export function useTheme(): Theme {
 }
 
 function readAccent(): Accent {
-  const value = document.documentElement.dataset.accent;
-  return ACCENTS.some((a) => a.value === value)
-    ? (value as Accent)
-    : "violet";
+  const value = document.documentElement.dataset["accent"];
+  return ACCENTS.some((a) => a.value === value) ? (value as Accent) : "violet";
 }
 
 export function setAccent(accent: Accent) {
-  document.documentElement.dataset.accent = accent;
+  document.documentElement.dataset["accent"] = accent;
   try {
     window.localStorage.setItem(ACCENT_KEY, accent);
   } catch {

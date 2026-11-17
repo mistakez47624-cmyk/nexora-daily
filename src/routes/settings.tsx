@@ -12,14 +12,10 @@ import { ConfirmDialog } from "@/components/nexora/confirm-dialog";
 import { FieldError } from "@/components/nexora/field-error";
 import { PageHeader } from "@/components/nexora/page-header";
 import { nameSchema, parseAppData } from "@/lib/schema";
+import { useAuth } from "@/lib/auth";
+import { supabaseConfigured } from "@/lib/supabase";
 import { clearAllData, exportData, replaceAllData, setProfileName, useAppData } from "@/lib/store";
-import {
-  ACCENTS,
-  setAccent,
-  setTheme,
-  useAccent,
-  useTheme,
-} from "@/lib/theme";
+import { ACCENTS, setAccent, setTheme, useAccent, useTheme } from "@/lib/theme";
 import type { AppData, Theme } from "@/lib/types";
 import { cn, pluralize } from "@/lib/utils";
 
@@ -45,6 +41,7 @@ export const Route = createFileRoute("/settings")({
 
 function SettingsPage() {
   const data = useAppData();
+  const auth = useAuth();
   const theme = useTheme();
   const accent = useAccent();
   const [name, setName] = useState(data.profile.name);
@@ -186,7 +183,6 @@ function SettingsPage() {
               </button>
             ))}
           </div>
-
         </SettingsSection>
 
         <SettingsSection
@@ -213,9 +209,7 @@ function SettingsPage() {
                   style={{ backgroundColor: item.color }}
                 />
                 <span className="text-sm font-medium">{item.label}</span>
-                {accent === item.value && (
-                  <span className="ml-auto text-primary">✓</span>
-                )}
+                {accent === item.value && <span className="ml-auto text-primary">✓</span>}
               </button>
             ))}
           </div>
@@ -223,8 +217,7 @@ function SettingsPage() {
 
         <SettingsSection
           title="Your data"
-
-          description={`Stored only in this browser. Currently: ${counts}.`}
+          description={`${supabaseConfigured && auth.status === "signed-in" ? "Synced to your account. A JSON backup can be exported at any time." : "Stored in this browser."} Currently: ${counts}.`}
         >
           <div className="flex flex-col gap-3 sm:flex-row">
             <Button variant="outline" onClick={doExport}>
@@ -245,7 +238,7 @@ function SettingsPage() {
 
         <SettingsSection
           title="Danger zone"
-          description="Permanently remove tasks, notes, inbox entries, routines, connected mailboxes, and your name from this browser."
+          description={`Permanently remove tasks, notes, inbox entries, routines, connected mailboxes, and your name${supabaseConfigured && auth.status === "signed-in" ? " from your account" : " from this browser"}.`}
         >
           <Button variant="destructive" onClick={() => setConfirmClear(true)}>
             <Trash2 /> Clear all data
@@ -274,7 +267,7 @@ function SettingsPage() {
         open={confirmClear}
         onOpenChange={setConfirmClear}
         title="Clear all data?"
-        description="This permanently deletes everything in NEXORA on this browser. Export a backup first if you might need it. This can't be undone."
+        description={`This permanently deletes everything in NEXORA${supabaseConfigured && auth.status === "signed-in" ? " from your account" : " on this browser"}. Export a backup first if you might need it. This can't be undone.`}
         confirmLabel="Clear everything"
         onConfirm={() => {
           if (clearAllData()) {
